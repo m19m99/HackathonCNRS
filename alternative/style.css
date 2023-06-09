@@ -27,6 +27,9 @@ th {
   color: red;
 }
 
+.value-difference.bleu {
+  color: #3b00fe;
+}
 .button {
   margin-right: 10px;
 }

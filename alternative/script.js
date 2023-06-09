@@ -1,37 +1,37 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   Promise.all([fetch('221410_A.json'), fetch('221410_B.json')])
-    .then(function(responses) {
-      return Promise.all(responses.map(function(response) {
+    .then(function (responses) {
+      return Promise.all(responses.map(function (response) {
         return response.json();
       }));
     })
-    .then(function(data) {
+    .then(function (data) {
       var dataA = data[0];
       var dataB = data[1];
       var similarData = getSimilarData(dataA, dataB);
 
-      generateButtons(similarData, dataA, dataB,'#button-container1');
+      generateButtons(similarData, dataA, dataB, '#button-container1');
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.error('Une erreur s\'est produite :', error);
     });
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   Promise.all([fetch('244138_A.json'), fetch('244138_B.json')])
-    .then(function(responses) {
-      return Promise.all(responses.map(function(response) {
+    .then(function (responses) {
+      return Promise.all(responses.map(function (response) {
         return response.json();
       }));
     })
-    .then(function(data) {
+    .then(function (data) {
       var dataA = data[0];
       var dataB = data[1];
       var similarData = getSimilarData(dataA, dataB);
 
-      generateButtons(similarData, dataA, dataB,'#button-container2');
+      generateButtons(similarData, dataA, dataB, '#button-container2');
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.error('Une erreur s\'est produite :', error);
     });
 });
@@ -59,7 +59,7 @@ function getSimilarData(dataA, dataB) {
   return similarData;
 }
 
-function generateButtons(similarData, dataA, dataB,contain) {
+function generateButtons(similarData, dataA, dataB, contain) {
   var buttonContainer = document.querySelector(contain);
 
   for (var i = 0; i < similarData.length; i++) {
@@ -96,7 +96,7 @@ function generateTable(selectedData, tableContainer) {
 
   var tableBody = document.createElement('tbody');
 
-  
+
   var row = document.createElement('tr');
 
   var header = document.createElement('th');
@@ -124,6 +124,8 @@ function generateTable(selectedData, tableContainer) {
 
 function compareData(dataA, dataB, tableBody) {
   for (var prop in dataA) {
+    let input = document.getElementById("seuil").value;
+
     var valueA = dataA[prop];
     var valueB = dataB[prop];
 
@@ -160,9 +162,21 @@ function compareData(dataA, dataB, tableBody) {
         valueBCell.classList.add('value-difference');
       }
 
+
+
       // Calcul de la différence relative
       var relativeDiff = ((valueA - valueB) / valueB) * 100;
       diffCell.textContent = relativeDiff.toFixed(2) + '%';
+
+      var diffCellValue = parseFloat(diffCell.textContent); // Convertir en nombre
+      var inputValue = parseFloat(input);
+
+      if (!isNaN(diffCellValue) && diffCellValue > inputValue) {
+        diffCell.classList.add('bleu');
+        valueACell.classList.add('bleu');
+        valueBCell.classList.add('bleu');
+      }
+
 
       if (!isNaN(relativeDiff)) {
         if (relativeDiff > 0) {
