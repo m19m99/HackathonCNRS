@@ -297,18 +297,30 @@
           var chart = new ApexCharts(document.querySelector("#candlestick-chart"), options);
           chart.render();
 
-          //define data array
-var tabledata = [
-    {id:1, name:"Oli Bob", progress:12, gender:"male", rating:1, col:"red", dob:"19/02/1984", car:1},
-    {id:2, name:"Mary May", progress:1, gender:"female", rating:2, col:"blue", dob:"14/05/1982", car:true},
-    {id:3, name:"Christine Lobowski", progress:42, gender:"female", rating:0, col:"green", dob:"22/05/1982", car:"true"},
-    {id:4, name:"Brendon Philips", progress:100, gender:"male", rating:1, col:"orange", dob:"01/08/1980"},
-    {id:5, name:"Margret Marmajuke", progress:16, gender:"female", rating:5, col:"yellow", dob:"31/01/1999"},
-    {id:6, name:"Frank Harbours", progress:38, gender:"male", rating:4, col:"red", dob:"12/05/1966", car:1},
-];
 
-//initialize table
-var table = new Tabulator("#example-table", {
-    data:tabledata, //assign data to table
-    autoColumns:true, //create columns from data field names
+// Sélectionnez les éléments
+const dragElement = document.getElementById('dragElement');
+const dropZone = document.getElementById('dropZone');
+
+// Ajoutez les gestionnaires d'événements pour le "drag and drop"
+dragElement.addEventListener('dragstart', (event) => {
+  // Définissez les données à transférer (ici, l'ID de l'élément)
+  event.dataTransfer.setData('text/plain', event.target.id);
+});
+
+dropZone.addEventListener('dragover', (event) => {
+  // Empêchez le comportement par défaut pour permettre le drop
+  event.preventDefault();
+});
+
+dropZone.addEventListener('drop', (event) => {
+  // Empêchez le comportement par défaut pour éviter d'ouvrir le contenu déposé dans le navigateur
+  event.preventDefault();
+
+  // Récupérez les données transférées (ici, l'ID de l'élément)
+  const draggedElementId = event.dataTransfer.getData('text/plain');
+
+  // Déplacez l'élément dans la zone de dépôt
+  const draggedElement = document.getElementById(draggedElementId);
+  dropZone.appendChild(draggedElement);
 });
